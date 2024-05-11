@@ -99,7 +99,7 @@ if (isset($_POST['save_edited_article'])) {
         foreach ($content_array as $article_data){
             echo "<div id='article-container' data-articleId='{$article_data['id']}'>
                     <div>
-                        <img src='' alt='{$article_data['id']}'>
+                        <img src='./image/{$article_data['image']}' alt='{$article_data['id']}' style='width: 16rem; height: 10rem;'>
                         <h2>Title: {$article_data['title']}</h2>
                         <h3>Author: {$article_data['author']}</h3>
                         <p>Description: {$article_data['description']}</p>
