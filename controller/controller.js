@@ -68,3 +68,18 @@ export const login = async (req, res) => {
     .status(200)
     .json({ message: 'Login successful', id: existingUser._id })
 }
+
+export const getById = async (req, res) => {
+  const id = req.params.id
+  let acc
+
+  try {
+    acc = await User.findById(id)
+  } catch (err) {
+    return console.log(err)
+  }
+  if (!acc) {
+    return res.status(404).json({ error: 'Account not found' })
+  }
+  return res.status(200).json({ acc })
+}
