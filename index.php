@@ -21,12 +21,13 @@ foreach ($contentXML->children() as $article) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Main</title>
+    <script src="./js/main.js" async></script>
 </head>
 <body>
     <?php 
         foreach ($content_array as $article_data){
             echo "<div id='article-container' data-articleId='{$article_data['id']}'>
-                    <div>
+                    <div id='{$article_data['title']}'>
                         <img src='./image/{$article_data['image']}' alt='{$article_data['id']}' style='width: 16rem; height: 10rem;'>
                         <h2>Title: {$article_data['title']}</h2>
                         <h3>Author: {$article_data['author']}</h3>
