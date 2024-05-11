@@ -40,7 +40,9 @@ export const signup = async (req, res) => {
   } catch (err) {
     return console.log(err)
   }
-  return res.status(201).json({ user })
+  return res
+    .status(201)
+    .json({ id: user._id, message: 'Sign up successful', status: 201 })
 }
 
 export const login = async (req, res) => {
