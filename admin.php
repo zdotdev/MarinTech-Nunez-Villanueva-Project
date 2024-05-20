@@ -13,12 +13,17 @@ foreach ($contentXML->children() as $article) {
     }
     $content_array[] = $content_data;
 }
+$category = 'pang_lalake';
+$filteredContent = array_filter($content_array, function($article_data) use ($category) {
+    return $article_data['category'] === $category;
+});
 if (isset($_POST['save_article'])) {
     $articleTitle = $_POST['article_title'];
     $articleAuthor = $_POST['article_author'];
     $articleDescription = $_POST['article_description'];
     $articleContent = $_POST['article_content'];
     $articleImage = $_POST['article_image'];
+    $articleCategory = $_POST['article_category'];
     $articleId = substr(str_shuffle("abcdefghijklmnopqrstuvwxyz"), 0, 5);
     
     $contentItem = $contentXML->addChild($articleId);
@@ -28,6 +33,7 @@ if (isset($_POST['save_article'])) {
     $contentItem->addChild('content', $articleContent);
     $contentItem->addChild('image', $articleImage);
     $contentItem->addChild('id', $articleId);
+    $contentItem->addChild('category', $articleCategory);
     $contentXML->asXML($dataFile);
     header("Location: http://localhost/jayson/admin.php");
     exit();
@@ -51,6 +57,7 @@ if (isset($_POST['save_edited_article'])) {
     $articleContent = $_POST['edit_article_content'];
     $articleImage = $_POST['edit_article_image'];
     $articleId = $_POST['edit_article_id'];
+    $articleCategory = $_POST['edit_article_category'];
 
     $itemExists = false;
     foreach ($contentXML->children() as $item) {
@@ -60,6 +67,7 @@ if (isset($_POST['save_edited_article'])) {
             $item->description = $articleDescription;
             $item->content = $articleContent;
             $item->image = $articleImage;
+            $item->category = $articleCategory;
             $itemExists = true;
             break;
         }
@@ -72,6 +80,7 @@ if (isset($_POST['save_edited_article'])) {
         $contentItem->addChild('content', $articleContent);
         $contentItem->addChild('image', $articleImage);
         $contentItem->addChild('id', $articleId);
+        $contentItem->addChild('category', $articleCategory);
     }
     $contentXML->asXML($dataFile);
     header("Location: http://localhost/jayson/admin.php");
@@ -93,11 +102,17 @@ if (isset($_POST['save_edited_article'])) {
         <input type="text" name="article_description" placeholder="Description">
         <input type="text" name="article_content" placeholder="Content">
         <input type="file" name="article_image">
+        <select name='article_category'>
+            <option value='pang_lalake' selected>Pang Lalake</option>
+            <option value='pang_babae'>Pang Babae</option>
+            <option value='pang_bading'>Pang Bading</option>
+            <option value='pang_tomboy'>Pang Tomboy</option>
+        </select>
         <button type="submit" name="save_article">Add Article</button>
     </form>
-    <?php 
-        foreach ($content_array as $article_data){
-            echo "<div id='article-container' data-articleId='{$article_data['id']}'>
+    <?php
+    foreach ($filteredContent as $article_data) {
+        echo "<div id='article-container' data-articleId='{$article_data['id']}'>
                     <div>
                         <img src='./image/{$article_data['image']}' alt='{$article_data['id']}' style='width: 16rem; height: 10rem;'>
                         <h2>Title: {$article_data['title']}</h2>
@@ -127,11 +142,16 @@ if (isset($_POST['save_edited_article'])) {
                                 <label>
                                     Image: <input type='file' name='edit_article_image'>
                                 </label>
+                                <select name='edit_article_category'></select>
+                                    <option value='pang_lalake' selected>Pang Lalake</option>
+                                    <option value='pang_babae'>Pang Babae</option>
+                                    <option value='pang_bading'>Pang Bading</option>
+                                    <option value='pang_tomboy'>Pang Tomboy</option>
+                                </select>
                                 <button type='submit' name='save_edited_article'>Save Article</button>
                             </form>
                         </dialog>
                     </div>
-                </div>";}
-    ?>
+                </div>" ?? "";}    ?>
 </body>
 </html>

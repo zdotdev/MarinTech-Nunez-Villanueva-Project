@@ -83,3 +83,18 @@ export const getById = async (req, res) => {
   }
   return res.status(200).json({ acc })
 }
+
+export const getByIdAndDelete = async (req, res) => {
+  const id = req.params.id
+  let acc
+
+  try {
+    acc = await User.findByIdAndDelete(id)
+  } catch (err) {
+    return console.log(err)
+  }
+  if (!acc) {
+    return res.status(404).json({ error: 'Account not found' })
+  }
+  return res.status(200).json({ acc })
+}

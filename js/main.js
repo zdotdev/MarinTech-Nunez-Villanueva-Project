@@ -17,15 +17,24 @@ if (id == null) {
 
 async function accIsTrue () {
   try {
-    const data = await fetch(`http://localhost:3000/api/${id}`)
-    const res = await data.json()
-    console.log(data.status)
-    if (data.status != 200 || res.status == '') {
-      document.querySelector('body').innerHTML = '<h1>Bawal ka dito gago!</h1>'
+    const id = 'someId' // Ensure 'id' is defined and has a value
+    const response = await fetch(`http://localhost:3000/api/${id}`)
+
+    // Check if the request was successful
+    if (!response.ok) {
+      throw new Error(`HTTP error status: ${response.status}`)
     }
+
+    const data = await response.json()
+    console.log(response.status) // Log the status of the HTTP response
+    // Assuming you want to do something with the data
+    // For example, display it in the body
+    document.querySelector('body').textContent = JSON.stringify(data) // Display the data as a string
   } catch (err) {
     console.log(err)
-    document.querySelector('body').innerHTML =
-      '<h1>Error: Bawal ka dito gago!</h1>'
+    document.querySelector('body').textContent =
+      '<h1>Error: Bawal ka dito gago!</h1>' // Display an error message
   }
 }
+
+accIsTrue()
